@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -7,13 +8,16 @@ const bcrypt = require('bcrypt');
 
 
 const app = express();
-app.use(cors());
-
-app.use(bodyParser.json());
+app.set('views',path.join(__dirname,'views'));
 app.set("view engine","ejs");
+
+app.use(express.static(path.join(__dirname,'public')));
+
+//app.use(express.static(__dirname+ '/public'));
 app.use(cors());
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
-app.use(express.static(__dirname+ '/public'));
+
 
 
 
@@ -24,6 +28,24 @@ let connection = mysql.createConnection({
     database : 'ecom_db'
   });
   connection.connect();
+
+
+
+  //setting routes
+
+  let pages = require('./routes/pages');
+  let about = require('./routes/about');
+  let contact = require('./routes/contact');
+  let product = require('./routes/product');
+  let shoping = require('./routes/shoping-cart');
+  
+  
+  app.use('/contact',contact);
+  app.use('/about',about);
+  app.use('/shoping-cart',shoping);
+  app.use('/product',product);
+  app.use('/',pages);
+
 
 
 
