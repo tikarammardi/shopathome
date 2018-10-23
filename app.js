@@ -38,8 +38,11 @@ let connection = mysql.createConnection({
   let contact = require('./routes/contact');
   let product = require('./routes/product');
   let shoping = require('./routes/shoping-cart');
+  let signin = require('./routes/signin');
+  let register = require('./routes/register');
   
-  
+  app.use('/signin',signin);
+  app.use('/register',register);
   app.use('/contact',contact);
   app.use('/about',about);
   app.use('/shoping-cart',shoping);
@@ -73,15 +76,15 @@ let connection = mysql.createConnection({
 app.post('/signin',(req,res)=> {
 
   let person = {
-    username: req.body.username,
     email: req.body.email,
     password:  req.body.password
     }
   //const password = req.body.password;
   //const username = req.body.username;
  
+    
 
-  let q = `SELECT * FROM users WHERE username = '${person.username}'`;
+  let q = `SELECT * FROM customers WHERE email = '${person.email}'`;
   
   connection.query(q,(err,results)=> {
       if(err) throw err;
@@ -105,13 +108,19 @@ app.post('/signin',(req,res)=> {
 //User registration 
 app.post('/register',(req,res)=> {
 
+
   let person = {
-      username: req.body.username,
       email: req.body.email,
-      password:  bcrypt.hashSync(req.body.password,10)
+      password:  bcrypt.hashSync(req.body.password,10),
+      address: req.body.address,
+      mobile: req.body.mobile,
+      city: req.body.city,
+      state: req.body.state,
+      zip: req.body.zip
       }
+
   
- let q = 'INSERT INTO users SET ?';
+ let q = 'INSERT INTO customers SET ?';
 
 
  connection.query(q,person,(err,results) => {
