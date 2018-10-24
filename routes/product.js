@@ -1,10 +1,22 @@
 const express = require('express');
 const router = express.Router();
+const connection = require('../config/database');
 
 
 router.get('/',(req,res)=> {
-    res.render('product');
-    //res.send("Hello there")
+
+    
+    connection.query('SELECT * FROM product',(err,results) => {
+        if(err) throw err;
+
+     
+        console.log(results);
+
+        res.render('product',{results});
+    });
+
+   
+    
 });
 
 

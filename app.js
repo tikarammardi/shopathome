@@ -1,10 +1,10 @@
 const express = require('express');
 const path = require('path');
-const mysql = require('mysql');
+//const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
-
+const connection = require('./config/database');
 
 
 const app = express();
@@ -21,12 +21,12 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 
 
-let connection = mysql.createConnection({
-    host     : 'localhost',
-    user     : 'root',
-    password : 'root',
-    database : 'ecom_db'
-  });
+// let connection = mysql.createConnection({
+//     host     : 'localhost',
+//     user     : 'root',
+//     password : 'root',
+//     database : 'ecom_db'
+//   });
   connection.connect();
 
 
@@ -62,10 +62,6 @@ let connection = mysql.createConnection({
 
      
         res.send(results);
-
-        
-
-      
         
     });
 
